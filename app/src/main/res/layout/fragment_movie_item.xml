@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/movie_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_normal"
+        app:cardCornerRadius="@dimen/margin_normal"
+        app:contentPadding="@dimen/margin_normal"
+        app:cardElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/movie_image_frame"
+                android:layout_width="@dimen/width_image"
+                android:layout_height="@dimen/height_image"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/movie_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/movie_image_loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="@dimen/no_margin"
+                android:layout_height="wrap_content"
+                android:theme="@style/TitleFormat"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/movie_image_frame"
+                app:layout_constraintTop_toTopOf="@+id/movie_image_frame" />
+
+            <TextView
+                android:id="@+id/movie_date"
+                android:layout_width="@dimen/no_margin"
+                android:layout_height="wrap_content"
+                android:theme="@style/DateFormat"
+                android:layout_below="@+id/movie_title"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@+id/movie_title"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/movie_title"
+                app:layout_constraintTop_toBottomOf="@+id/movie_title" />
+
+            <TextView
+                android:id="@+id/movie_overview"
+                android:layout_width="@dimen/no_margin"
+                android:layout_height="wrap_content"
+                android:theme="@style/OverviewFormat"
+                android:layout_below="@+id/movie_date"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@+id/movie_date"
+                app:layout_constraintStart_toStartOf="@+id/movie_date"
+                app:layout_constraintTop_toBottomOf="@+id/movie_date" />
+
+            <RatingBar
+                android:id="@+id/movie_rating_star"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/margin_normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/movie_overview" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

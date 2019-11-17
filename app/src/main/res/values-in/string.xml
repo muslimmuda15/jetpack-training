@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Sinema</string>
+    <string name="movie">video</string>
+    <string name="tv">televisi</string>
+    <string name="more">lainnya</string>
+    <string name="change_language">Ganti bahasa</string>
+    <string name="english">Ingris</string>
+    <string name="indonesia">Nusantara</string>
+
+    <string name="language">Bahasa</string>
+    <string name="my_language">Indonesia</string>
+    <plurals name="vote">
+        <item quantity="other">%1$d pemberi suara</item>
+    </plurals>
+    <string name="favorite">Favorit</string>
+    <string name="unfavorite">Tidak Favorit</string>
+</resources>

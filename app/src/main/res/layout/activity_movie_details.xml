@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.app.rachmad.movie.details.MovieDetailsActivity">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/no_margin"
+        android:layout_marginTop="@dimen/no_margin"
+        android:layout_marginEnd="@dimen/no_margin"
+        android:background="#00ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/back_drop_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/back_drop_height_image"
+                android:layout_alignParentTop="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/movie_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/back_drop_loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/poster_layout"
+                android:layout_width="@dimen/width_image"
+                android:layout_height="@dimen/height_image"
+                android:layout_marginStart="@dimen/double_margin"
+                android:layout_marginTop="@dimen/double_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/back_drop_layout" >
+
+                <ImageView
+                    android:id="@+id/poster_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/poster_loading"
+                    android:layout_width="@dimen/width_image"
+                    android:layout_height="@dimen/height_image"
+                    android:background="@color/gray" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/title_movie"
+                android:layout_width="@dimen/no_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:theme="@style/TitleDetailsFormat"
+                app:layout_constraintEnd_toEndOf="@+id/overview_text"
+                app:layout_constraintStart_toEndOf="@+id/poster_layout"
+                app:layout_constraintTop_toTopOf="@+id/poster_layout" />
+
+            <TextView
+                android:id="@+id/date_release"
+                android:layout_width="@dimen/no_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:theme="@style/DescriptionFormat"
+                app:layout_constraintEnd_toEndOf="@+id/title_movie"
+                app:layout_constraintStart_toStartOf="@+id/title_movie"
+                app:layout_constraintTop_toBottomOf="@+id/title_movie" />
+
+            <RatingBar
+                android:id="@+id/movie_rating_star"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/no_margin"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintStart_toStartOf="@+id/date_release"
+                app:layout_constraintTop_toBottomOf="@+id/date_release" />
+
+            <TextView
+                android:id="@+id/rating_text"
+                android:layout_width="@dimen/width_image"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_strange"
+                app:layout_constraintStart_toEndOf="@+id/movie_rating_star"
+                app:layout_constraintTop_toBottomOf="@+id/date_release" />
+
+            <TextView
+                android:id="@+id/votes"
+                android:layout_width="@dimen/no_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@+id/date_release"
+                app:layout_constraintStart_toStartOf="@+id/movie_rating_star"
+                app:layout_constraintTop_toBottomOf="@+id/movie_rating_star" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/genres"
+                android:layout_width="@dimen/no_margin"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:flexWrap="wrap"
+                app:layout_constraintEnd_toEndOf="@+id/votes"
+                app:layout_constraintStart_toStartOf="@+id/votes"
+                app:layout_constraintTop_toBottomOf="@+id/votes">
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <TextView
+                android:id="@+id/overview_text"
+                android:layout_width="@dimen/no_margin"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/double_margin"
+                android:layout_marginEnd="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/poster_layout"
+                app:layout_constraintTop_toBottomOf="@+id/poster_layout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/no_margin"
+        android:layout_marginTop="@dimen/no_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="@dimen/no_margin" />
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="@dimen/no_margin"
+        android:layout_height="@dimen/no_margin"
+        android:layout_marginStart="@dimen/no_margin"
+        android:layout_marginTop="@dimen/no_margin"
+        android:layout_marginEnd="@dimen/no_margin"
+        android:layout_marginBottom="@dimen/no_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
