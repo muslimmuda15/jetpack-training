@@ -57,8 +57,8 @@ class MovieItemRecyclerViewAdapter(
                     .into(holder.image)
 
             with(holder) {
-                title.text = item.name[0]
-                overview.text = item.overview[0]
+                title.text = item.title
+                overview.text = item.overview
 
                 date.text = Utils.dateFormat(item.release_date)
 

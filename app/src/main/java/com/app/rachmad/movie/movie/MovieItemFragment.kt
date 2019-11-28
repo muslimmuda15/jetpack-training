@@ -8,38 +8,34 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import com.app.rachmad.movie.MainActivity
 import com.app.rachmad.movie.R
-import com.app.rachmad.movie.`object`.MovieBaseData
 import com.app.rachmad.movie.`object`.MovieData
+import com.app.rachmad.movie.viewmodel.ListModel
 
-const val ARG_TYPE = "Type"
-const val ARG_DATA = "Data"
 class MovieItemFragment : Fragment() {
-
-    lateinit var cinemaType: String
-    var data: MovieBaseData? = null
     private var listener: OnMovieClickListener? = null
     lateinit var adapter: MovieItemRecyclerViewAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            cinemaType = it.getString(ARG_TYPE, "")
-            data = it.getSerializable(ARG_DATA) as MovieBaseData
-
-            adapter = MovieItemRecyclerViewAdapter(data?.results, listener)
-        }
-    }
+    var viewModel: ListModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_movie_item_list, container, false)
 
-        if (view is RecyclerView) {
-            view.layoutManager = LinearLayoutManager(context)
-            view.adapter = adapter
-        }
+        viewModel = (activity as MainActivity).viewModel
+
+        viewModel?.movie()
+        val data = viewModel?.getMovieData()
+
+        data!!.observe(this, Observer<List<MovieData>> {
+            adapter = MovieItemRecyclerViewAdapter(it, listener)
+
+            if (view is RecyclerView) {
+                view.layoutManager = LinearLayoutManager(context)
+                view.adapter = adapter
+            }
+        })
         return view
     }
 
@@ -64,11 +60,6 @@ class MovieItemFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(type: String) =
-                MovieItemFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_TYPE, type)
-                    }
-                }
+        fun newInstance() = MovieItemFragment()
     }
 }

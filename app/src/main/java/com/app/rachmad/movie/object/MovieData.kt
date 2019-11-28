@@ -20,5 +20,5 @@ data class MovieData(
 
 data class GenreData(
         val id: Int,
-        val name: List<String>
+        val name: String
 )

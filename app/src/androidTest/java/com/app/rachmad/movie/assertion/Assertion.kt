@@ -5,10 +5,15 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
@@ -23,7 +28,7 @@ object Assertion {
 
             override fun describeTo(description: Description) {}
         }
-        Espresso.onView(CoreMatchers.allOf(ViewMatchers.withId(RecyclerViewId), ViewMatchers.isDisplayed())).check(ViewAssertions.matches(matcher))
+        onView(allOf(withId(RecyclerViewId), isDisplayed())).check(matches(matcher))
     }
 
     fun atPositionOnView(position: Int, itemMatcher: Matcher<View>, targetViewId: Int): Matcher<View> {

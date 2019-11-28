@@ -7,6 +7,8 @@ import android.view.*
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.app.rachmad.movie.BuildConfig
 import com.app.rachmad.movie.GlideApp
@@ -26,6 +28,7 @@ import kotlinx.android.synthetic.main.custom_chip.view.*
 const val TV_EXTRA = "TvExtra"
 class TvDetailsActivity : AppCompatActivity() {
     lateinit var tvData: TvData
+    val c = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,7 @@ class TvDetailsActivity : AppCompatActivity() {
         var imageHeight = 0
 
         with(tvData) {
-            supportActionBar?.title = HtmlCompat.fromHtml("<font color='#ffffff'>${name[0]}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            supportActionBar?.title = HtmlCompat.fromHtml("<font color='#ffffff'>${name}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
             GlideApp.with(movie_image)
                     .load("${BuildConfig.SERVER_URL}$backdrop_path")
@@ -78,10 +81,10 @@ class TvDetailsActivity : AppCompatActivity() {
                     })
                     .into(poster_image)
 
-            date_release.text = Utils.dateFormat(release_date)
+            date_release.text = Utils.dateFormat(first_air_date)
 
-            title_movie.text = name[0]
-            overview_text.text = overview[0]
+            title_movie.text = name
+            overview_text.text = overview
 
             movie_rating_star.rating = vote_average / 2
             rating_text.text = vote_average.toString()
@@ -89,16 +92,18 @@ class TvDetailsActivity : AppCompatActivity() {
             votes.text = resources.getQuantityString(R.plurals.vote, vote_count, vote_count)
 
             viewModel.genre()
-            val genre: List<GenreData> = viewModel.getGenreList()
+            val genreData: LiveData<List<GenreData>> = viewModel.getGenreList()
 
-            genre_ids.forEach { genre_id ->
-                val genreCard = layoutInflater.inflate(R.layout.custom_chip, null) as FrameLayout
-                val genreText = genre.find { it.id == genre_id.toInt() }
-                genreText?.let {
-                    genreCard.genre_text.text = it.name[0]
-                    genres.addView(genreCard)
+            genreData.observe(c, Observer { genre ->
+                genre_ids.forEach { genre_id ->
+                    val genreCard = layoutInflater.inflate(R.layout.custom_chip, null) as FrameLayout
+                    val genreText = genre.find { it.id == genre_id.toInt() }
+                    genreText?.let {
+                        genreCard.genre_text.text = it.name
+                        genres.addView(genreCard)
+                    }
                 }
-            }
+            })
         }
 
         movie_image.viewTreeObserver.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener{
@@ -134,10 +139,6 @@ class TvDetailsActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

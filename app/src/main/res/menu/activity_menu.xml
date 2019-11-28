@@ -10,19 +10,4 @@
         android:icon="@drawable/ic_more_vert_black_24dp"
         android:orderInCategory="100"
         app:showAsAction="always" />
-
-<!--    <item-->
-<!--        android:title="@string/more"-->
-<!--        android:icon="@drawable/ic_more_vert_black_24dp"-->
-<!--        android:orderInCategory="100"-->
-<!--        app:showAsAction="always">-->
-
-<!--        <menu>-->
-<!--            <item-->
-<!--                android:id="@+id/change_language"-->
-<!--                android:icon="@drawable/ic_translate_black_24dp"-->
-<!--                android:title="@string/change_language"-->
-<!--                app:showAsAction="ifRoom" />-->
-<!--        </menu>-->
-<!--    </item>-->
 </menu>

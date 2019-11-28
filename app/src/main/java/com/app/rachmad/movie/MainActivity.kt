@@ -17,8 +17,6 @@ import com.app.rachmad.movie.details.MOVIE_EXTRA
 import com.app.rachmad.movie.details.MovieDetailsActivity
 import com.app.rachmad.movie.details.TV_EXTRA
 import com.app.rachmad.movie.details.TvDetailsActivity
-import com.app.rachmad.movie.movie.ARG_DATA
-import com.app.rachmad.movie.movie.ARG_TYPE
 import com.app.rachmad.movie.movie.MovieItemFragment
 import com.app.rachmad.movie.tv.TvItemFragment
 import com.app.rachmad.movie.viewmodel.ListModel
@@ -30,8 +28,6 @@ const val ARG_MOVIE = "Movie"
 const val ARG_TV = "Tv"
 class MainActivity : AppCompatActivity(), MovieItemFragment.OnMovieClickListener, TvItemFragment.OnTvClickListener {
     var viewModel: ListModel? = null
-    lateinit var movieFragment: MovieItemFragment
-    lateinit var tvFragment: TvItemFragment
 
     override fun onClickMovie(item: MovieData) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
@@ -64,24 +60,6 @@ class MainActivity : AppCompatActivity(), MovieItemFragment.OnMovieClickListener
     private fun initialize(){
         context = applicationContext
         viewModel = ViewModelProviders.of(this).get(ListModel::class.java)
-
-        viewModel?.movie()
-        val movieData = viewModel?.getMovieData()
-        movieFragment = MovieItemFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_TYPE, ARG_MOVIE)
-                putSerializable(ARG_DATA, movieData)
-            }
-        }
-
-        viewModel?.tv()
-        val tvData = viewModel?.getTvData()
-        tvFragment = TvItemFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_TYPE, ARG_TV)
-                putSerializable(ARG_DATA, tvData)
-            }
-        }
     }
 
     private fun setupListener(){
@@ -132,10 +110,10 @@ class MainActivity : AppCompatActivity(), MovieItemFragment.OnMovieClickListener
         override fun getItem(position: Int): Fragment {
             when(position){
                 0 -> {
-                    return movieFragment
+                    return MovieItemFragment.newInstance()
                 }
                 1 -> {
-                    return tvFragment
+                    return TvItemFragment.newInstance()
                 }
                 else -> {
                     return Fragment()

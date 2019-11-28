@@ -3,7 +3,7 @@ package com.app.rachmad.movie.helper
 import android.content.Context
 import com.app.rachmad.movie.`object`.GenreData
 import com.app.rachmad.movie.`object`.MovieData
-import com.app.rachmad.movie.`object`.TvBaseData
+import com.app.rachmad.movie.`object`.TvData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_movie_details.*
@@ -19,67 +19,55 @@ object Utils {
         return df.format(newDate)
     }
 
-    fun getJsonArray(c: Context): List<GenreData>{
+    fun getGenreArray(): List<GenreData>{
         val listType = object : TypeToken<List<GenreData>>() { }.type
-        return Gson().fromJson(getGenreJson(c), listType)
+        return Gson().fromJson(getGenreJson(), listType)
     }
 
-    fun getMovieArray(c: Context): List<MovieData>{
-        val listType = object : TypeToken<List<GenreData>>() { }.type
-        return Gson().fromJson(getMovieJson(c), listType)
+    fun getMovieArray(): List<MovieData>{
+        val listType = object : TypeToken<List<MovieData>>() { }.type
+        return Gson().fromJson(getMovieJson(), listType)
     }
 
-    fun getTvArray(c: Context): List<MovieData>{
-        val listType = object : TypeToken<List<GenreData>>() { }.type
-        return Gson().fromJson(getTvJson(c), listType)
+    fun getTvArray(): List<TvData>{
+        val listType = object : TypeToken<List<TvData>>() { }.type
+        return Gson().fromJson(getTvJson(), listType)
     }
 
-    fun getMovieJson(c: Context): String? {
-        var json: String
+    fun getMovieJson(): String? {
+        var json: String?
         try {
-            val file = c.getAssets().open("movie.json")
-            val size = file.available()
-            val buffer = ByteArray(size)
-            file.read(buffer)
-            file.close()
-            json = String(buffer)
+            val file = this.javaClass.classLoader!!.getResourceAsStream("movie.json")
+            json = file.bufferedReader().use { it.readText() }
         } catch (ex: IOException) {
             ex.printStackTrace()
-            return null
+            json = null
         }
 
         return json
     }
 
-    fun getTvJson(c: Context): String? {
+    fun getTvJson(): String? {
         var json: String? = null
         try {
-            val file = c.getAssets().open("tv.json")
-            val size = file.available()
-            val buffer = ByteArray(size)
-            file.read(buffer)
-            file.close()
-            json = String(buffer)
+            val file = this.javaClass.classLoader!!.getResourceAsStream("tv.json")
+            json = file.bufferedReader().use { it.readText() }
         } catch (ex: IOException) {
             ex.printStackTrace()
-            return null
+            json = null
         }
 
         return json
     }
 
-    fun getGenreJson(c: Context): String? {
-        var json: String? = null
+    fun getGenreJson(): String? {
+        var json: String?
         try {
-            val file = c.getAssets().open("genres.json")
-            val size = file.available()
-            val buffer = ByteArray(size)
-            file.read(buffer)
-            file.close()
-            json = String(buffer)
+            val file = this.javaClass.classLoader!!.getResourceAsStream("genres.json")
+            json = file.bufferedReader().use { it.readText() }
         } catch (ex: IOException) {
             ex.printStackTrace()
-            return null
+            json = null
         }
 
         return json

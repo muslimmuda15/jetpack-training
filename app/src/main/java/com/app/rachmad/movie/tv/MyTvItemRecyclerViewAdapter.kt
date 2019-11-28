@@ -58,10 +58,10 @@ class TvItemRecyclerViewAdapter(
                     .into(holder.image)
 
             with(holder) {
-                title.text = item.name[0]
-                overview.text = item.overview[0]
+                title.text = item.name
+                overview.text = item.overview
 
-                date.text = Utils.dateFormat(item.release_date)
+                date.text = Utils.dateFormat(item.first_air_date)
 
                 ratingStar.rating = item.vote_average / 2
             }

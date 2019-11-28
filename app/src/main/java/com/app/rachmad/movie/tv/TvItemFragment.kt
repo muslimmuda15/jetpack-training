@@ -8,39 +8,35 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import com.app.rachmad.movie.MainActivity
 import com.app.rachmad.movie.R
-import com.app.rachmad.movie.`object`.MovieData
-import com.app.rachmad.movie.`object`.TvBaseData
 import com.app.rachmad.movie.`object`.TvData
+import com.app.rachmad.movie.viewmodel.ListModel
 
-const val ARG_TYPE = "Type"
-const val ARG_DATA = "Data"
 class TvItemFragment : Fragment() {
 
-    lateinit var cinemaType: String
-    var data: TvBaseData? = null
     private var listener: OnTvClickListener? = null
     lateinit var adapter: TvItemRecyclerViewAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            cinemaType = it.getString(ARG_TYPE, "")
-            data = it.getSerializable(ARG_DATA) as TvBaseData
-
-            adapter = TvItemRecyclerViewAdapter(data?.results, listener)
-        }
-    }
+    var viewModel: ListModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_tv_item_list, container, false)
 
-        if (view is RecyclerView) {
-            view.layoutManager = LinearLayoutManager(context)
-            view.adapter = adapter
-        }
+        viewModel = (activity as MainActivity).viewModel
+
+        viewModel?.tv()
+        val data = viewModel?.getTvData()
+
+        data!!.observe(this, Observer<List<TvData>> {
+            adapter = TvItemRecyclerViewAdapter(it, listener)
+
+            if (view is RecyclerView) {
+                view.layoutManager = LinearLayoutManager(context)
+                view.adapter = adapter
+            }
+        })
         return view
     }
 
@@ -65,11 +61,6 @@ class TvItemFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(type: String) =
-                TvItemFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_TYPE, type)
-                    }
-                }
+        fun newInstance() = TvItemFragment()
     }
 }
