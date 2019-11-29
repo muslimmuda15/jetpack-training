@@ -1,39 +1,35 @@
-package com.app.rachmad.movie
+package com.app.rachmad.movie.favorite
 
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
-import com.app.rachmad.movie.`object`.MovieData
-import com.app.rachmad.movie.`object`.TvData
+import com.app.rachmad.movie.BaseActivity
+import com.app.rachmad.movie.R
+import com.app.rachmad.movie.`object`.MovieDataFavorite
+import com.app.rachmad.movie.`object`.TvDataFavorite
 import com.app.rachmad.movie.details.*
-import com.app.rachmad.movie.favorite.FavoriteActivity
 import com.app.rachmad.movie.movie.MovieItemFragment
 import com.app.rachmad.movie.tv.TvItemFragment
 import com.app.rachmad.movie.viewmodel.ListModel
-import com.bumptech.glide.annotation.GlideModule
-import com.bumptech.glide.module.AppGlideModule
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_favorite.*
 
-const val ARG_MOVIE = "Movie"
-const val ARG_TV = "Tv"
-class MainActivity : BaseActivity(), MovieItemFragment.OnMovieClickListener, TvItemFragment.OnTvClickListener {
-
-    override fun onClickMovie(item: MovieData) {
+class FavoriteActivity : BaseActivity(), MovieItemFragment.OnMovieFavoriteListener, TvItemFragment.OnTvFavoriteListener{
+    override fun onClickMovie(item: MovieDataFavorite) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
         intent.putExtra(MOVIE_EXTRA, item.id)
         startActivity(intent)
     }
 
-    override fun onClickTv(item: TvData) {
+    override fun onClickTv(item: TvDataFavorite) {
         val intent = Intent(this, TvDetailsActivity::class.java)
         intent.putExtra(TV_EXTRA, item.id)
         startActivity(intent)
@@ -77,7 +73,12 @@ class MainActivity : BaseActivity(), MovieItemFragment.OnMovieClickListener, TvI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_favorite)
+
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
 
         initialize()
 
@@ -99,8 +100,8 @@ class MainActivity : BaseActivity(), MovieItemFragment.OnMovieClickListener, TvI
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.fav -> {
-                startActivity(Intent(this, FavoriteActivity::class.java))
+            android.R.id.home -> {
+                finish()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -116,10 +117,10 @@ class MainActivity : BaseActivity(), MovieItemFragment.OnMovieClickListener, TvI
         override fun getItem(position: Int): Fragment {
             when(position){
                 0 -> {
-                    return MovieItemFragment.newInstance(false)
+                    return MovieItemFragment.newInstance(true)
                 }
                 1 -> {
-                    return TvItemFragment.newInstance(false)
+                    return TvItemFragment.newInstance(true)
                 }
                 else -> {
                     return Fragment()
@@ -132,6 +133,3 @@ class MainActivity : BaseActivity(), MovieItemFragment.OnMovieClickListener, TvI
         lateinit var context: Context
     }
 }
-
-@GlideModule
-class MyAppGlideModule : AppGlideModule()

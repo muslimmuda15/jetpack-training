@@ -1,19 +1,21 @@
 <resources>
+    <plurals name="vote">
+        <item quantity="zero">No vote</item>
+        <item quantity="one">%1$d vote</item>
+        <item quantity="other">%1$d votes</item>
+    </plurals>
     <string name="app_name">Cinemas</string>
     <string name="movie">movie</string>
     <string name="tv">tv</string>
     <string name="more">more</string>
     <string name="change_language">Change Language</string>
     <string name="english">English</string>
-    <string name="indonesia">Indonesia</string>
+    <string name="no_movie">You have no favorite movie</string>
+    <string name="no_tv">You have no favorite tv</string>
 
+    <string name="indonesia">Indonesia</string>
     <string name="language">Language</string>
     <string name="my_language">English</string>
-    <plurals name="vote">
-        <item quantity="zero">No vote</item>
-        <item quantity="one">%1$d vote</item>
-        <item quantity="other">%1$d votes</item>
-    </plurals>
     <string name="favorite">Favorite</string>
     <string name="unfavorite">Unfavorite</string>
 </resources>

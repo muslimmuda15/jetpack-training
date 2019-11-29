@@ -9,34 +9,74 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
+import com.app.rachmad.movie.BaseActivity
 import com.app.rachmad.movie.MainActivity
 import com.app.rachmad.movie.R
 import com.app.rachmad.movie.`object`.TvData
+import com.app.rachmad.movie.`object`.TvDataFavorite
+import com.app.rachmad.movie.favorite.TvFavoriteItemRecyclerViewAdapter
 import com.app.rachmad.movie.viewmodel.ListModel
+import kotlinx.android.synthetic.main.fragment_tv_item_list.view.*
 
 class TvItemFragment : Fragment() {
 
     private var listener: OnTvClickListener? = null
-    lateinit var adapter: TvItemRecyclerViewAdapter
+    private var listenerFavorite: OnTvFavoriteListener? = null
+    private lateinit var adapter: TvItemRecyclerViewAdapter
+    private lateinit var adapterFavorite: TvFavoriteItemRecyclerViewAdapter
     var viewModel: ListModel? = null
+    var isFavorite = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            isFavorite = it.getBoolean(ARG_IS_FAVORITE_TV)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_tv_item_list, container, false)
+        viewModel = (activity as BaseActivity).viewModel
 
-        viewModel = (activity as MainActivity).viewModel
+        if(isFavorite){
+            if(viewModel!!.countAllFavoriteTv() > 0) {
+                view.tv_list.visibility = RecyclerView.VISIBLE
+                view.no_tv.visibility = View.GONE
 
-        viewModel?.tv()
-        val data = viewModel?.getTvData()
-
-        data!!.observe(this, Observer<List<TvData>> {
-            adapter = TvItemRecyclerViewAdapter(it, listener)
-
-            if (view is RecyclerView) {
-                view.layoutManager = LinearLayoutManager(context)
-                view.adapter = adapter
+                var tvFavorite = viewModel?.tvFavoriteLiveData
+                tvFavorite?.observe(this, Observer<PagedList<TvDataFavorite>> {
+                    adapterFavorite = TvFavoriteItemRecyclerViewAdapter(listenerFavorite)
+                    adapterFavorite.submitList(it)
+                    if (view.tv_list is RecyclerView) {
+                        view.tv_list.layoutManager = LinearLayoutManager(context)
+                        view.tv_list.adapter = adapterFavorite
+                    }
+                })
             }
-        })
+            else{
+                view.tv_list.visibility = RecyclerView.GONE
+                view.no_tv.visibility = View.VISIBLE
+            }
+        }
+        else {
+            view.tv_list.visibility = RecyclerView.VISIBLE
+            view.no_tv.visibility = View.GONE
+
+            viewModel?.tv()
+            val data = viewModel?.getTvData()
+
+            data!!.observe(this, Observer<List<TvData>> {
+                adapter = TvItemRecyclerViewAdapter(it, listener)
+
+                if (view.tv_list is RecyclerView) {
+                    view.tv_list.layoutManager = LinearLayoutManager(context)
+                    view.tv_list.adapter = adapter
+                }
+            })
+        }
         return view
     }
 
@@ -44,7 +84,11 @@ class TvItemFragment : Fragment() {
         super.onAttach(context)
         if (context is OnTvClickListener) {
             listener = context
-        } else {
+        }
+        else if(context is OnTvFavoriteListener){
+            listenerFavorite = context
+        }
+        else {
             throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
         }
     }
@@ -55,12 +99,21 @@ class TvItemFragment : Fragment() {
     }
 
     interface OnTvClickListener {
-        // TODO: Update argument type and name
         fun onClickTv(item: TvData)
     }
 
+    interface OnTvFavoriteListener {
+        fun onClickTv(item: TvDataFavorite)
+    }
+
     companion object {
+        const val ARG_IS_FAVORITE_TV = "IsFavoriteTv"
+
         @JvmStatic
-        fun newInstance() = TvItemFragment()
+        fun newInstance(isFavorite: Boolean) = TvItemFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(ARG_IS_FAVORITE_TV, isFavorite)
+            }
+        }
     }
 }

@@ -6,6 +6,8 @@
     <string name="change_language">Ganti bahasa</string>
     <string name="english">Ingris</string>
     <string name="indonesia">Nusantara</string>
+    <string name="no_movie">Anda tidak punya favorite movie yang anda sukai</string>
+    <string name="no_tv">Anda tidak punya favorite tv yang anda sukai</string>
 
     <string name="language">Bahasa</string>
     <string name="my_language">Indonesia</string>
